@@ -1,6 +1,6 @@
 from streamlit.testing.v1 import AppTest
 
-from logic_utils import check_guess
+from logic_utils import check_guess, get_range_for_difficulty, parse_guess, update_score
 
 def test_winning_guess():
     # If the secret is 50 and guess is 50, it should be a win
@@ -20,6 +20,66 @@ def test_guess_too_low():
     outcome, message = check_guess(40, 50)
     assert outcome == "Too Low"
     assert "HIGHER" in message
+
+
+def test_range_for_easy_difficulty():
+    assert get_range_for_difficulty("Easy") == (1, 20)
+
+
+def test_range_for_normal_difficulty():
+    # Regression test: Normal and Hard ranges were swapped, giving Normal
+    # the bigger range even though Hard has fewer attempts. Normal should
+    # be the smaller, in-between range.
+    assert get_range_for_difficulty("Normal") == (1, 50)
+
+
+def test_range_for_hard_difficulty():
+    # Regression test: Hard should have the bigger range since it also
+    # has fewer attempts, making it the hardest setting overall.
+    assert get_range_for_difficulty("Hard") == (1, 100)
+
+
+def test_parse_guess_valid_integer():
+    ok, value, err = parse_guess("42")
+    assert ok is True
+    assert value == 42
+    assert err is None
+
+
+def test_parse_guess_valid_float_is_truncated():
+    ok, value, err = parse_guess("42.9")
+    assert ok is True
+    assert value == 42
+
+
+def test_parse_guess_empty_string_is_invalid():
+    ok, value, err = parse_guess("")
+    assert ok is False
+    assert value is None
+    assert err is not None
+
+
+def test_parse_guess_non_numeric_is_invalid():
+    ok, value, err = parse_guess("banana")
+    assert ok is False
+    assert value is None
+    assert err is not None
+
+
+def test_update_score_win_awards_points():
+    assert update_score(current_score=0, outcome="Win", attempt_number=1) == 80
+
+
+def test_update_score_too_low_deducts_points():
+    assert update_score(current_score=0, outcome="Too Low", attempt_number=1) == -5
+
+
+def test_update_score_too_high_always_deducts_points():
+    # Regression test: "Too High" used to alternate between +5 and -5
+    # depending on whether attempt_number was even or odd, letting a wrong
+    # guess sometimes award points. It should always deduct, like "Too Low".
+    assert update_score(current_score=0, outcome="Too High", attempt_number=1) == -5
+    assert update_score(current_score=0, outcome="Too High", attempt_number=2) == -5
 
 
 def test_new_game_resets_state_after_loss():

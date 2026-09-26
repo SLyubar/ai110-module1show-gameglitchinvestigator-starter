@@ -6,7 +6,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 - What did the game look like the first time you ran it?
 
-The game asked me to guess a number between 1 and 100 with a text box entry field. There is a hint enabled that tells me to go higher and lower after each guess. I was allowed 8 guesses.
+The game asked me to guess a number between 1 and 100 with a text box entry field. There is a hint enabled that tells me to go higher and lower after each guess. I was allowed 8 guesses and it defaulted to Normal difficulty.
 
 - List at least two concrete bugs you noticed at the start  
 
@@ -30,13 +30,15 @@ Document at least 3 bugs you found. Add rows as needed.
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
 
-I used Claude Code only.
+I used Claude Code with Sonnet 5 only. I used Claude as a partner to identify bugs, suggest solutions, and implement tests and fixes with permission.
 
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
 
 The AI suggested changing the hint messaging for the check_guess function to fix the backward hint bug. I verified the result by asking Claude to create or update the test_game_logic.py file with tests. I validated that all tests passed.
 
 - Give one example of an AI suggestion you did not accept as written (including what the AI suggested, why you rejected or changed it, and how you verified your version). It does not have to be a suggestion that was wrong: over-engineered, out of scope, harder to read, or a poor fit for this codebase all count.
+
+Claude suggested updating the logic for the parse_guess function to implement rounding. For example, if a user enters 49.9, the current logic truncates to 49 so they would get a "Too Low" message. Claude wanted to add rounding so this scenario would actually result in a "Win" message. I rejected this change and kept it as is because that guess is in fact too low. Granted the opposite scenario of a player guessing 50.1 would result in win so this may be more of a developer preference. It made more logical sense for me to either keep the truncation or not allow floats to begin with.
 
 ---
 
