@@ -107,6 +107,17 @@ def test_new_game_resets_state_after_loss():
     assert at.session_state.history == []
 
 
+def test_fresh_game_shows_full_attempts_before_any_guess():
+    # Regression test: attempts used to be initialized to 1 instead of 0,
+    # so "Attempts left" showed one fewer than attempt_limit before the
+    # player had made any guess at all.
+    at = AppTest.from_file("app.py")
+    at.run()
+
+    assert at.session_state.attempts == 0
+    assert "Attempts left: 8" in at.info[0].value
+
+
 def test_submit_updates_attempts_history_and_hint_together():
     # Regression test: pressing Enter in the guess box used to trigger a
     # rerun that only updated the text_input's value, leaving the guess
@@ -125,6 +136,19 @@ def test_submit_updates_attempts_history_and_hint_together():
     assert at.session_state.attempts == attempts_before + 1
     assert at.session_state.history == [1000000]
     assert len(at.warning) == 1
+
+
+def test_guess_prompt_matches_difficulty_range():
+    # Regression test: the guess prompt used to hardcode "between 1 and 100"
+    # no matter the difficulty, which was wrong for Easy (1-20) and Normal
+    # (1-50). It should reflect the actual range for the selected difficulty.
+    at = AppTest.from_file("app.py")
+    at.run()
+
+    at.selectbox[0].set_value("Easy").run()
+
+    low, high = get_range_for_difficulty("Easy")
+    assert f"between {low} and {high}" in at.info[0].value
 
 
 def test_debug_score_matches_game_score_after_guess():

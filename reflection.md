@@ -10,7 +10,7 @@ The game asked me to guess a number between 1 and 100 with a text box entry fiel
 
 - List at least two concrete bugs you noticed at the start  
 
-The hints kept telling me to go higher even when I guessed 100 which is the upper bound limit on the range and it told me to go lower when it should have been go higher. The secret number was 56 so the hints were backwards. Additionally, the game said I had 8 attempts but ended after 7, the developer debug info shows 7 attempts, and the history only shows my first 5 guesses. The debug info says my score is -10 while the overall game score is -15. Lastly, clicking new game shows a console message but does not actually start a new game.
+The hints kept telling me to go higher even when I guessed 100 which is the upper bound limit on the range and it told me to go lower when it should have been go higher. The secret number was 56 so the hints were backwards. Additionally, the game said I had 8 attempts but ended after 7, the developer debug info shows 7 attempts, and the history only shows my first 5 guesses. The debug info says my score is -10 while the overall game score is -15. Lastly, clicking new game shows a console message but does not actually start a new game. More bugs were added below while fixing the initial ones.
 
 **Bug Reproduction Log**
 
@@ -23,6 +23,8 @@ Document at least 3 bugs you found. Add rows as needed.
 | Clicked "New Game" | New game starts| I'm stuck on the previous game's screen | "Game over. Start a new game to try again." | `app.py`
 | Make a guess | Score changes after each guess | The developer debug score does not match the total game score | No errors | `app.py`
 | Make a guess and press enter | Hint displays, attempts increase in debug mode, and the guess is added to the guess list | The attempt increases but no hint is displayed and the guess is not added to the guess list in debug info | No errors | `app.py`
+| Change the game difficulty | The printed instructions display the different guess ranges | The guess ranges are hardcoded and always show between 1 and 100 | No errors | `app.py`
+| No action taken | full attempts display in the UI based on difficulty | The actual attempts show 1 before any guesses are made | No errors | `app.py`
 
 ---
 
