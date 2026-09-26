@@ -20,17 +20,21 @@ Document at least 3 bugs you found. Add rows as needed.
 |-------|-------------------|-----------------|------------------------| ------------------------|
 | Guessed 100 | Hint should say "Go Lower" | Hint says "Go Higher" | No errors | `app.py`, `check_guess` function lines 36-47
 | Guessed 1 | Hint should say "Go Higher" | Hint says "Go Lower" | No errors | `app.py`, `check_guess` function lines 36-47
-| Clicked "New Game" | New game starts| I'm stuck on the previous game's screen | "Game over. Start a new game to try again." | `app.py`, `if new_game` logic lines 134-138
+| Clicked "New Game" | New game starts| I'm stuck on the previous game's screen | "Game over. Start a new game to try again." | `app.py`, lines 118-122
 | Make a guess | Score changes after each guess | The developer debug score does not match the total game score | No errors | `app.py`, lines 114-119
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)? 
-I used Claude Code.
+- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+
+I used Claude Code only.
+
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+
 The AI suggested changing the hint messaging for the check_guess function to fix the backward hint bug. I verified the result by asking Claude to create or update the test_game_logic.py file with tests. I validated that all tests passed.
+
 - Give one example of an AI suggestion you did not accept as written (including what the AI suggested, why you rejected or changed it, and how you verified your version). It does not have to be a suggestion that was wrong: over-engineered, out of scope, harder to read, or a poor fit for this codebase all count.
 
 ---
@@ -38,10 +42,16 @@ The AI suggested changing the hint messaging for the check_guess function to fix
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
+
 I had Claude generate tests and ensured they passed. I also tested the fix in the UI by trying to reproduce the original bug and verifying it no longer appears.
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
+
+- Describe at least one test you ran (manual or using pytest) and what it showed you about your code.
+
+I ran pytest after Claude fixed the high/low bug and confirmed the result passed. There were actually three related tests to check if the code correctly returned messages and outcomes for winning gueses, low guess, or high guesses. These tests showed that the code fixed worked as designed.
+  
 - Did AI help you design or understand any tests? How?
+
+Yes, I asked Claude to generate tests or update existing tests to verify that the bugs were fixed. It explained the tests as it created them so I did not need further explanation.
 
 ---
 
