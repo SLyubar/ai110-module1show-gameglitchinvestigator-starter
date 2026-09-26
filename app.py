@@ -105,18 +105,18 @@ def render_debug_info():
             st.write("Score:", st.session_state.score)
             st.write("Difficulty:", difficulty)
             st.write("History:", st.session_state.history)
+#FIX: Pressing Enter in the UI now triggers hints and guess updates
+with st.form(key=f"guess_form_{difficulty}", clear_on_submit=True):
+    raw_guess = st.text_input(
+        "Enter your guess:",
+        key=f"guess_input_{difficulty}"
+    )
+    submit = st.form_submit_button("Submit Guess 🚀")
 
-raw_guess = st.text_input(
-    "Enter your guess:",
-    key=f"guess_input_{difficulty}"
-)
-
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 with col1:
-    submit = st.button("Submit Guess 🚀")
-with col2:
     new_game = st.button("New Game 🔁")
-with col3:
+with col2:
     show_hint = st.checkbox("Show hint", value=True)
 #FIX: Reset the score and history using agent mode to start a new game
 if new_game:

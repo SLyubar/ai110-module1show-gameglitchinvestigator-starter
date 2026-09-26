@@ -47,6 +47,26 @@ def test_new_game_resets_state_after_loss():
     assert at.session_state.history == []
 
 
+def test_submit_updates_attempts_history_and_hint_together():
+    # Regression test: pressing Enter in the guess box used to trigger a
+    # rerun that only updated the text_input's value, leaving the guess
+    # unprocessed (no attempt increment, no history entry, no hint) because
+    # the button and text input were separate, unlinked widgets. Wrapping
+    # them in an st.form means a single submission always updates attempts,
+    # history, and the hint message together.
+    at = AppTest.from_file("app.py")
+    at.run()
+
+    attempts_before = at.session_state.attempts
+
+    at.text_input(key="guess_input_Normal").set_value("1000000")
+    at.button[0].click().run()  # form's submit button
+
+    assert at.session_state.attempts == attempts_before + 1
+    assert at.session_state.history == [1000000]
+    assert len(at.warning) == 1
+
+
 def test_debug_score_matches_game_score_after_guess():
     # Regression test: the "Developer Debug Info" panel must show the
     # same score as the rest of the game on the same rerun. It used to

@@ -18,10 +18,11 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error | Suspected Code Location
 |-------|-------------------|-----------------|------------------------| ------------------------|
-| Guessed 100 | Hint should say "Go Lower" | Hint says "Go Higher" | No errors | `app.py`, `check_guess` function lines 36-47
-| Guessed 1 | Hint should say "Go Higher" | Hint says "Go Lower" | No errors | `app.py`, `check_guess` function lines 36-47
-| Clicked "New Game" | New game starts| I'm stuck on the previous game's screen | "Game over. Start a new game to try again." | `app.py`, lines 118-122
-| Make a guess | Score changes after each guess | The developer debug score does not match the total game score | No errors | `app.py`, lines 114-119
+| Guessed 100 | Hint should say "Go Lower" | Hint says "Go Higher" | No errors | `app.py`, `check_guess` function
+| Guessed 1 | Hint should say "Go Higher" | Hint says "Go Lower" | No errors | `app.py`, `check_guess` function
+| Clicked "New Game" | New game starts| I'm stuck on the previous game's screen | "Game over. Start a new game to try again." | `app.py`
+| Make a guess | Score changes after each guess | The developer debug score does not match the total game score | No errors | `app.py`
+| Make a guess and press enter | Hint displays, attempts increase in debug mode, and the guess is added to the guess list | The attempt increases but no hint is displayed and the guess is not added to the guess list in debug info | No errors | `app.py`
 
 ---
 
