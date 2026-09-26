@@ -45,3 +45,23 @@ def test_new_game_resets_state_after_loss():
     assert at.session_state.attempts == 0
     assert at.session_state.score == 0
     assert at.session_state.history == []
+
+
+def test_debug_score_matches_game_score_after_guess():
+    # Regression test: the "Developer Debug Info" panel must show the
+    # same score as the rest of the game on the same rerun. It used to
+    # render before update_score() ran, so it displayed a stale,
+    # one-guess-behind score instead of the current one.
+    at = AppTest.from_file("app.py")
+    at.run()
+
+    # A guess this high is always "Too High" no matter the random secret
+    # (Normal difficulty range is 1-100), and it's the first attempt, so
+    # update_score deterministically subtracts 5.
+    at.text_input(key="guess_input_Normal").set_value("1000000")
+    at.button[0].click().run()
+
+    assert at.session_state.score == -5
+
+    debug_score_line = at.expander[0].markdown[2].value
+    assert f"`{at.session_state.score}`" in debug_score_line
