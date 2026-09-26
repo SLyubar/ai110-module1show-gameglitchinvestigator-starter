@@ -5,25 +5,32 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 1. What was broken when you started?
 
 - What did the game look like the first time you ran it?
+
+The game asked me to guess a number between 1 and 100 with a text box entry field. There is a hint enabled that tells me to go higher and lower after each guess. I was allowed 8 guesses.
+
 - List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+
+The hints kept telling me to go higher even when I guessed 100 which is the upper bound limit on the range and it told me to go lower when it should have been go higher. The secret number was 56 so the hints were backwards. Additionally, the game said I had 8 attempts but ended after 7, the developer debug info shows 7 attempts, and the history only shows my first 5 guesses. The debug info says my score is -10 while the overall game score is -15. Lastly, clicking new game shows a console message but does not actually start a new game.
 
 **Bug Reproduction Log**
 
 Document at least 3 bugs you found. Add rows as needed.
 
-| Input | Expected Behavior | Actual Behavior | Console Output / Error |
-|-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Input | Expected Behavior | Actual Behavior | Console Output / Error | Suspected Code Location
+|-------|-------------------|-----------------|------------------------| ------------------------|
+| Guessed 100 | Hint should say "Go Lower" | Hint says "Go Higher" | No errors | `app.py`, `check_guess` function lines 36-47
+| Guessed 1 | Hint should say "Go Higher" | Hint says "Go Lower" | No errors | `app.py`, `check_guess` function lines 36-47
+| Clicked "New Game" | New game starts| I'm stuck on the previous game's screen | "Game over. Start a new game to try again." | `app.py`, `if new_game` logic lines 134-138
+| Make a guess | Score changes after each guess | The developer debug score does not match the total game score | No errors | `app.py`, lines 114-119
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)? 
+I used Claude Code.
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+The AI suggested changing the hint messaging for the check_guess function to fix the backward hint bug. I verified the result by asking Claude to create or update the test_game_logic.py file with tests. I validated that all tests passed.
 - Give one example of an AI suggestion you did not accept as written (including what the AI suggested, why you rejected or changed it, and how you verified your version). It does not have to be a suggestion that was wrong: over-engineered, out of scope, harder to read, or a poor fit for this codebase all count.
 
 ---
@@ -31,6 +38,7 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
+I had Claude generate tests and ensured they passed. I also tested the fix in the UI by trying to reproduce the original bug and verifying it no longer appears.
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
 - Did AI help you design or understand any tests? How?
